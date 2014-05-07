@@ -8,7 +8,7 @@ var environment = function() {
 
     function reproduce(){
         for(var i=0; i<bacteria_list.length; i++){
-            if(Math.random()<0.005){
+            if(!bacteria_list[i].isDead() && Math.random()<0.005){
                 addBacteria(bacteria_list[i].generateBacteria());
                 console.log('new !');
             }
