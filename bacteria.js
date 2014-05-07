@@ -9,7 +9,7 @@ function generateBacteria(x,y)
 
     var dx = Math.random() - 0.5;
     var dy = Math.random() - 0.5;
-    var health = 150;
+    var health = 200;
     var living = true;
 
     return {

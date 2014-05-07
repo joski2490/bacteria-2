@@ -18,7 +18,7 @@ window.addEventListener("load", function (event){
         environment.reproduce();
         console.log('drawing ' + environment.getLength()+' bacteria');
 
-        if(Date.now() - timer < 5000){
+        if(Date.now() - timer < 1e4){
             window.requestAnimationFrame(renderLoop);
         }
     }
