@@ -6,15 +6,20 @@ var environment = function() {
         bacteria_list.push(bacteria);
     }
 
-    function drawAll(ctx){
+    function reproduce(){
         for(var i=0; i<bacteria_list.length; i++){
-            bacteria_list[i].draw(ctx);
+            if(Math.random()<0.005){
+                addBacteria(bacteria_list[i].generateBacteria());
+                console.log('new !');
+            }
         }
     }
 
     return {
         addBacteria: addBacteria,
-        drawAll: drawAll,
-        getLength: function (){return bacteria_list.length;}
+        drawAll: function(ctx){bacteria_list.forEach(function(b){b.draw(ctx);})},
+        moveAll: function(){bacteria_list.forEach(function(b){b.move();})},
+        getLength: function (){return bacteria_list.length;},
+        reproduce: reproduce
     };
 }();
