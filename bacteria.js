@@ -1,7 +1,11 @@
-function generateBacteria()
+function generateBacteria(x,y)
 {
-    var x = 400 + (Math.random()*100 - 50);
-    var y = 400 + (Math.random()*100 - 50);
+    if(x === undefined){
+        x = 400 + (Math.random() * 100 - 50);
+    }
+    if(y === undefined){
+        y = 400 + (Math.random() * 100 - 50);
+    }
 
     var dx = Math.random() - 0.5;
     var dy = Math.random() - 0.5;
@@ -16,6 +20,6 @@ function generateBacteria()
             dx = Math.random() - 0.5;
             dy = Math.random() - 0.5;
         },
-        generateBacteria: generateBacteria
+        generateBacteria: function(){return generateBacteria(x,y)}
     };
 }
