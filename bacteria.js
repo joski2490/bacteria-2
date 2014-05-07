@@ -1,14 +1,18 @@
-function generateBacteria(x,y)
+function generateBacteria(init_vars)
 {
-    if(x === undefined){
-        x = 400 + (Math.random() * 100 - 50);
-    }
-    if(y === undefined){
-        y = 400 + (Math.random() * 100 - 50);
+    if(init_vars === undefined){
+        var init_vars = {
+            x: 400 + (Math.random() * 100 - 50),
+            y: 400 + (Math.random() * 100 - 50),
+            move_balance: 0.5
+        }
     }
 
-    var dx = Math.random() - 0.5;
-    var dy = Math.random() - 0.5;
+    var x = init_vars.x;
+    var y = init_vars.y;
+
+    var dx = Math.random() - init_vars.move_balance;
+    var dy = Math.random() - init_vars.move_balance;
     var health = 200;
     var living = true;
 
@@ -17,17 +21,31 @@ function generateBacteria(x,y)
             ctx.fillRect(x-1,y-1,2,2);
         },
         move: function(){
-            if(health<=0){
-                living = false;
-            } else {
-                health -= 1;
-                x += dx;
-                y += dy;
-                dx = Math.random() - 0.5;
-                dy = Math.random() - 0.5;
+            if(living){
+                if(health<=0){
+                    living = false;
+                } else {
+                    health -= 1;
+                    x += dx;
+                    y += dy;
+                    dx = Math.random() - init_vars.move_balance;
+                    dy = Math.random() - init_vars.move_balance;
+                }
             }
         },
-        generateBacteria: function(){return generateBacteria(x,y)},
+        generateBacteria: function(){
+            var move_balance = init_vars.move_balance;
+            if(Math.random()<0.1){
+                move_balance += move_balance * (Math.random() - 0.5) * 2 * 0.25;
+                console.log('new movebalance : ' + move_balance);
+            }
+            var parent_vars = {
+                x: x,
+                y: y,
+                move_balance: move_balance
+            };
+            return generateBacteria(parent_vars)
+        },
         isDead: function(){return !living;}
     };
 }
