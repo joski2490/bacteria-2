@@ -49,7 +49,7 @@ function generateBacteria(init_vars)
         },
         reproduce: function(){
             var result = null;
-            if(living && Math.random()<0.005){
+            if(living && Math.random()<0.0055){
                 result = reproduceSelf();
             }
             return result;
