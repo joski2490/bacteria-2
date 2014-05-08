@@ -16,6 +16,20 @@ function generateBacteria(init_vars)
     var health = 200;
     var living = true;
 
+    function reproduceSelf(){
+        var move_balance = init_vars.move_balance;
+        if(Math.random()<0.1){
+            move_balance += move_balance * (Math.random() - 0.5) * 2 * 0.25;
+            console.log('new movebalance : ' + move_balance);
+        }
+        var parent_vars = {
+            x: x,
+            y: y,
+            move_balance: move_balance
+        };
+        return generateBacteria(parent_vars)
+    };
+
     return {
         draw: function (ctx){
             ctx.fillRect(x-1,y-1,2,2);
@@ -33,18 +47,12 @@ function generateBacteria(init_vars)
                 }
             }
         },
-        generateBacteria: function(){
-            var move_balance = init_vars.move_balance;
-            if(Math.random()<0.1){
-                move_balance += move_balance * (Math.random() - 0.5) * 2 * 0.25;
-                console.log('new movebalance : ' + move_balance);
+        reproduce: function(){
+            var result = null;
+            if(living && Math.random()<0.005){
+                result = reproduceSelf();
             }
-            var parent_vars = {
-                x: x,
-                y: y,
-                move_balance: move_balance
-            };
-            return generateBacteria(parent_vars)
+            return result;
         },
         isDead: function(){return !living;}
     };

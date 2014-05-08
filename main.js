@@ -15,7 +15,7 @@ window.addEventListener("load", function (event){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         environment.drawAll(ctx);
         environment.moveAll();
-        environment.reproduce();
+        environment.reproduceAll();
         console.log('drawing ' + environment.getLength()+' bacteria');
 
         if(Date.now() - timer < 2e4){

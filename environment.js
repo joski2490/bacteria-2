@@ -6,10 +6,11 @@ var environment = function() {
         bacteria_list.push(bacteria);
     }
 
-    function reproduce(){
+    function reproduceAll(){
         for(var i=0; i<bacteria_list.length; i++){
-            if(!bacteria_list[i].isDead() && Math.random()<0.005){
-                addBacteria(bacteria_list[i].generateBacteria());
+            var newBact = bacteria_list[i].reproduce();
+            if(newBact !== null) {
+                addBacteria(newBact);
                 console.log('new !');
             }
         }
@@ -20,6 +21,6 @@ var environment = function() {
         drawAll: function(ctx){bacteria_list.forEach(function(b){b.draw(ctx);})},
         moveAll: function(){bacteria_list.forEach(function(b){b.move();})},
         getLength: function (){return bacteria_list.length;},
-        reproduce: reproduce
+        reproduceAll: reproduceAll
     };
 }();
