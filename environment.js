@@ -4,6 +4,17 @@ var environment = function() {
 
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
+    };
+
+    function clean(){
+        var new_list = [];
+        bacteria_list.forEach(function(b){
+            if(!b.isDead()) {
+                new_list.push(b);
+            }
+        });
+
+        bacteria_list = new_list;
     }
 
     function reproduceAll(){
@@ -14,13 +25,14 @@ var environment = function() {
                 console.log('new !');
             }
         }
-    }
+    };
 
     return {
         addBacteria: addBacteria,
         drawAll: function(ctx){bacteria_list.forEach(function(b){b.draw(ctx);})},
         moveAll: function(){bacteria_list.forEach(function(b){b.move();})},
         getLength: function (){return bacteria_list.length;},
-        reproduceAll: reproduceAll
+        reproduceAll: reproduceAll,
+        clean: clean
     };
 }();
