@@ -54,6 +54,7 @@ function generateBacteria(init_vars)
             }
             return result;
         },
-        isDead: function(){return !living;}
+        isDead: function(){return !living;},
+        getCoords: function() {return {x:x,y:y};}
     };
 }
