@@ -13,10 +13,7 @@ window.addEventListener("load", function (event){
 
     function renderLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        environment.drawAll(ctx);
-        environment.moveAll();
-        environment.reproduceAll();
-        environment.clean();
+        environment.mainLoop(ctx);
         console.log('drawing ' + environment.getLength()+' bacteria');
 
         if(Date.now() - timer < 2e4){

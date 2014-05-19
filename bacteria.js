@@ -55,6 +55,7 @@ function generateBacteria(init_vars)
             return result;
         },
         isDead: function(){return !living;},
-        getCoords: function() {return {x:x,y:y};}
+        getCoords: function() {return {x:x,y:y};},
+        eat: function(r) {health += r;}
     };
 }

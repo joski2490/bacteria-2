@@ -7,7 +7,7 @@ var environment = function() {
         bacteria_list.push(bacteria);
     };
 
-    function getResource(x, y){
+    function getResource(x, y, r){
         var i = Math.floor(x/10),
             j = Math.floor(y/10),
             result;
@@ -15,9 +15,11 @@ var environment = function() {
         if(resources[i] === undefined || resources[i][j] === undefined){
             result = 0;
         } else {
-            result = resources[i][j];
+            result = Math.max(resources[i][j], 0);
+            resources[i][j] -= result;
         }
 
+        return result;
     };
 
     function setResource(x, y, r){
@@ -41,13 +43,26 @@ var environment = function() {
             if(resources[i] !== undefined){
                 for(var j=0; j<resources[i].length; j++){
                     if(resources[i][j] !== undefined){
-                        var alpha = Math.max(resources[i][j] / 100, 1);
+                        var alpha = Math.min(resources[i][j] / 100, 1);
                         ctx.fillStyle = "rgba(0,200,0,"+alpha+")";
-                        ctx.fillRect(x,y,10,10);
+                        console.log('draw resource with alpha : '+alpha);
+                        ctx.fillRect(i*10,j*10,10,10);
                     }
                 }
             }
         }
+    };
+
+    function drawAll(ctx){
+        drawResources(ctx);
+        ctx.fillStyle = "rgb(0,0,0)";
+        bacteria_list.forEach(function(b){b.draw(ctx);})
+    };
+
+    function moveAll(){
+        bacteria_list.forEach(function(b){
+            b.move();
+        })
     };
 
     function clean(){
@@ -74,16 +89,26 @@ var environment = function() {
         }
     };
 
+    function nourrishAll(){
+        bacteria_list.forEach(function(b){
+            if(Math.random()<0.5){
+                var bact_coords = b.getCoords();
+                b.eat(getResource(bact_coords.x, bact_coords.y, 1));
+            }
+        });
+    };
+
+    function mainLoop(ctx){
+        drawAll(ctx);
+        moveAll();
+        reproduceAll();
+        clean();
+        nourrishAll();
+    };
+
     return {
         addBacteria: addBacteria,
-        drawAll: function(ctx){
-            drawResources(ctx);
-            ctx.fillStyle = "rgb(0,0,0)";
-            bacteria_list.forEach(function(b){b.draw(ctx);})
-        },
-        moveAll: function(){bacteria_list.forEach(function(b){b.move();})},
         getLength: function (){return bacteria_list.length;},
-        reproduceAll: reproduceAll,
-        clean: clean
+        mainLoop: mainLoop
     };
 }();
