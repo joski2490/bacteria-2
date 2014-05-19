@@ -5,6 +5,7 @@ window.addEventListener("load", function (event){
     var play_chkb = document.getElementById("play");
     var ctx = canvas.getContext('2d');
     var timer = Date.now();
+    var looping = false;
 
     console.log('init');
 
@@ -13,10 +14,14 @@ window.addEventListener("load", function (event){
     }
 
     function renderLoop() {
+        if(looping){
+            console.log('throttling at ' + environment.getLength()+' bacteria');
+        }
         if(play_chkb.checked){
+            looping = true;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             environment.mainLoop(ctx);
-            console.log('drawing ' + environment.getLength()+' bacteria');
+            looping = false;
         }
 
         window.requestAnimationFrame(renderLoop);

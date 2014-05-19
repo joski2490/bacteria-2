@@ -3,6 +3,16 @@ var environment = function() {
     var bacteria_list = [];
     var resources = [];
 
+    setResource(400,400,100);
+    for(var r=10; r<=40; r+=10){
+        for(var i=400-r; i<=400+r; i+=10){
+            setResource(i,400-r,400/r);
+            setResource(i,400+r,400/r);
+            setResource(400-r,i,400/r);
+            setResource(400+r,i,400/r);
+        }
+    }
+
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
     };
