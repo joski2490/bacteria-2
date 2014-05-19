@@ -15,7 +15,7 @@ var environment = function() {
         if(resources[i] === undefined || resources[i][j] === undefined){
             result = 0;
         } else {
-            result = Math.max(resources[i][j], 0);
+            result = Math.min(resources[i][j], r);
             resources[i][j] -= result;
         }
 
@@ -109,6 +109,6 @@ var environment = function() {
     return {
         addBacteria: addBacteria,
         getLength: function (){return bacteria_list.length;},
-        mainLoop: mainLoop
+        mainLoop: mainLoop,
     };
 }();
