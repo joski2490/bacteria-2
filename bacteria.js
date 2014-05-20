@@ -5,8 +5,18 @@ function generateBacteria(init_vars)
             x: 400 + (Math.random() * 100 - 50),
             y: 400 + (Math.random() * 100 - 50),
             move_balance_x: 0.5,
-            move_balance_y: 0.5
+            move_balance_y: 0.5,
+            proba: {
+                reproduction: 0.0055,
+                mutation: 0.1
+            }
         }
+    }
+    if(init_vars.proba === undefined){
+        init_vars.proba = {
+            reproduction: 0.0055,
+            mutation: 0.1
+        };
     }
 
     var x = init_vars.x;
@@ -20,7 +30,7 @@ function generateBacteria(init_vars)
     function reproduceSelf(){
         var move_balance_x = init_vars.move_balance_x;
         var move_balance_y = init_vars.move_balance_y;
-        if(Math.random()<0.1){
+        if(Math.random()<init_vars.proba.mutation){
             move_balance_x += move_balance_x * (Math.random() - 0.5) * 2 * 0.25;
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
             console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
@@ -54,7 +64,7 @@ function generateBacteria(init_vars)
         },
         reproduce: function(){
             var result = null;
-            if(living && Math.random()<0.0055){
+            if(living && Math.random()<init_vars.proba.reproduction){
                 result = reproduceSelf();
             }
             return result;

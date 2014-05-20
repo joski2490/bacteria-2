@@ -1,19 +1,19 @@
-var environment = function() {
+var environment = function(params) {
 
     var bacteria_list = [];
     var resources = [];
 
-    setResource(400,400,100);
-    for(var r=10; r<=40; r+=10){
-        for(var i=400-r; i<=400+r; i+=10){
+    setResource(params.center.x,params.center.y,100);
+    for(var r=params.granularity; r<=10*params.granularity; r+=params.granularity){
+        for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
             var ratio = 400/r;
-            if(i==400-r || i==400+r){
+            if(i==params.center.x-r || i==params.center.x+r){
                 ratio = 200/r;
             }
-            setResource(i,400-r, ratio);
-            setResource(i,400+r, ratio);
-            setResource(400-r,i, ratio);
-            setResource(400+r,i, ratio);
+            setResource(i,params.center.y-r, ratio);
+            setResource(i,params.center.y+r, ratio);
+            setResource(params.center.x-r,i, ratio);
+            setResource(params.center.x+r,i, ratio);
         }
     }
 
@@ -22,8 +22,8 @@ var environment = function() {
     };
 
     function getResource(x, y, r){
-        var i = Math.floor(x/10),
-            j = Math.floor(y/10),
+        var i = Math.floor(x/params.granularity),
+            j = Math.floor(y/params.granularity),
             result;
 
         if(resources[i] === undefined || resources[i][j] === undefined){
@@ -37,8 +37,8 @@ var environment = function() {
     };
 
     function setResource(x, y, r){
-        var i = Math.floor(x/10),
-            j = Math.floor(y/10);
+        var i = Math.floor(x/params.granularity),
+            j = Math.floor(y/params.granularity);
         if(resources[i] === undefined){
             console.log('create ['+i+'][]');
             resources[i] = [];
@@ -60,7 +60,7 @@ var environment = function() {
                         var alpha = Math.min(resources[i][j] / 100, 1);
                         ctx.fillStyle = "rgba(0,200,0,"+alpha+")";
                         console.log('draw resource with alpha : '+alpha);
-                        ctx.fillRect(i*10,j*10,10,10);
+                        ctx.fillRect(i*params.granularity, j*params.granularity, params.granularity, params.granularity);
                     }
                 }
             }
@@ -105,7 +105,7 @@ var environment = function() {
 
     function nourrishAll(){
         bacteria_list.forEach(function(b){
-            if(Math.random()<0.5){
+            if(Math.random()<params.proba.eat){
                 var bact_coords = b.getCoords();
                 b.eat(getResource(bact_coords.x, bact_coords.y, 1));
             }
@@ -125,4 +125,13 @@ var environment = function() {
         getLength: function (){return bacteria_list.length;},
         mainLoop: mainLoop,
     };
-}();
+}({
+    center: {
+        x: 400,
+        y: 400
+    },
+    granularity: 10,
+    proba: {
+        eat: 0.5
+    }
+});
