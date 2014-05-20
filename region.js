@@ -33,6 +33,31 @@ function createRegion(params){
         }
     };
 
+    function getValue(x, y){
+        var i = Math.floor(x/params.granularity),
+            j = Math.floor(y/params.granularity),
+            result;
+
+        if(values[i] === undefined || values[i][j] === undefined){
+            result = 0;
+        } else {
+            result = values[i][j];
+        }
+
+        return result;
+    };
+
+    function setValue(x, y, qty){
+        var i = Math.floor(x/params.granularity),
+            j = Math.floor(y/params.granularity);
+        if(values[i] === undefined){
+            console.log('create ['+i+'][]');
+            values[i] = [];
+        }
+        console.log('set ['+i+']['+j+']');
+        values[i][j] = qty;
+    };
+
     function drawValues(ctx){
         for(var i=0; i<values.length; i++){
             if(values[i] !== undefined){
@@ -52,6 +77,8 @@ function createRegion(params){
     return {
         popValue: popValue,
         pushValue: pushValue,
+        getValue: getValue,
+        setValue: setValue,
         drawValues: drawValues
     }
 }

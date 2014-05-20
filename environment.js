@@ -10,6 +10,15 @@ var environment = function(params) {
         },
         max: 100
     });
+    var water = createRegion({
+        granularity: params.granularity,
+        color: {
+            red: 0,
+            green: 0,
+            blue: 200
+        },
+        max: 100
+    });
 
     resources.pushValue(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
@@ -25,12 +34,15 @@ var environment = function(params) {
         }
     }
 
+    water.setValue(100,100,50);
+
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
     };
 
     function drawAll(ctx){
         resources.drawValues(ctx);
+        water.drawValues(ctx);
         ctx.fillStyle = "rgb(0,0,0)";
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
