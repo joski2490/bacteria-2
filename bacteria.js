@@ -6,10 +6,6 @@ function generateBacteria(init_vars)
             y: 400 + (Math.random() * 100 - 50),
             move_balance_x: 0.5,
             move_balance_y: 0.5,
-            proba: {
-                reproduction: 0.005,
-                mutation: 0.1
-            },
             color: {
                 red:0,
                 green:0,
@@ -17,6 +13,14 @@ function generateBacteria(init_vars)
             }
         }
     }
+
+    //fixed
+    var params = {
+        proba: {
+            reproduction: 0.005,
+            mutation: 0.1
+        }
+    };
 
     var x = init_vars.x;
     var y = init_vars.y;
@@ -33,7 +37,7 @@ function generateBacteria(init_vars)
         var color_green = init_vars.color.green;
         var color_blue = init_vars.color.blue;
 
-        if(Math.random()<init_vars.proba.mutation){
+        if(Math.random()<params.proba.mutation){
             move_balance_x += move_balance_x * (Math.random() - 0.5) * 2 * 0.25;
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
             console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
@@ -51,10 +55,6 @@ function generateBacteria(init_vars)
             y: y,
             move_balance_x: move_balance_x,
             move_balance_y: move_balance_y,
-            proba: {
-                reproduction: init_vars.proba.reproduction,
-                mutation: init_vars.proba.mutation
-            },
             color: {
                 red:color_red,
                 green:color_green,
@@ -85,7 +85,7 @@ function generateBacteria(init_vars)
         },
         reproduce: function(){
             var result = null;
-            if(living && Math.random()<init_vars.proba.reproduction){
+            if(living && Math.random()<params.proba.reproduction){
                 result = reproduceSelf();
             }
             return result;
