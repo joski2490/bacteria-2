@@ -23,10 +23,7 @@ var environment = function(params) {
     resources.set(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
         for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
-            var ratio = 400/r;
-            if(i==params.center.x-r || i==params.center.x+r){
-                ratio = 200/r;
-            }
+            var ratio = params.granularity * 50/r;
             resources.set(i,params.center.y-r, ratio);
             resources.set(i,params.center.y+r, ratio);
             resources.set(params.center.x-r,i, ratio);
