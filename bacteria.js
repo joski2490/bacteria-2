@@ -7,7 +7,7 @@ function generateBacteria(init_vars)
             move_balance_x: 0.5,
             move_balance_y: 0.5,
             proba: {
-                reproduction: 0.0055,
+                reproduction: 0.005,
                 mutation: 0.1
             }
         }
