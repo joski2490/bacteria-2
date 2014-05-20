@@ -9,6 +9,11 @@ function generateBacteria(init_vars)
             proba: {
                 reproduction: 0.005,
                 mutation: 0.1
+            },
+            color: {
+                red:0,
+                green:0,
+                blue:0
             }
         }
     }
@@ -24,10 +29,22 @@ function generateBacteria(init_vars)
     function reproduceSelf(){
         var move_balance_x = init_vars.move_balance_x;
         var move_balance_y = init_vars.move_balance_y;
+        var color_red = init_vars.color.red;
+        var color_green = init_vars.color.green;
+        var color_blue = init_vars.color.blue;
+
         if(Math.random()<init_vars.proba.mutation){
             move_balance_x += move_balance_x * (Math.random() - 0.5) * 2 * 0.25;
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
             console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
+
+            color_red += Math.floor(Math.random() * 30 - 15);
+            color_green += Math.floor(Math.random() * 30 - 15);
+            color_blue += Math.floor(Math.random() * 30 - 15);
+
+            color_red = Math.min(Math.max(color_red, 0), 255);
+            color_green = Math.min(Math.max(color_green, 0), 255);
+            color_blue = Math.min(Math.max(color_blue, 0), 255);
         }
         var parent_vars = {
             x: x,
@@ -37,6 +54,11 @@ function generateBacteria(init_vars)
             proba: {
                 reproduction: init_vars.proba.reproduction,
                 mutation: init_vars.proba.mutation
+            },
+            color: {
+                red:color_red,
+                green:color_green,
+                blue:color_blue
             }
         };
 
@@ -45,6 +67,7 @@ function generateBacteria(init_vars)
 
     return {
         draw: function (ctx){
+            ctx.fillStyle = "rgb(" + init_vars.color.red + "," + init_vars.color.green + "," + init_vars.color.blue + ")";
             ctx.fillRect(x-1,y-1,2,2);
         },
         move: function(){

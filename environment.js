@@ -43,7 +43,6 @@ var environment = function(params) {
     function drawAll(ctx){
         resources.drawValues(ctx);
         water.drawValues(ctx);
-        ctx.fillStyle = "rgb(0,0,0)";
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
 
