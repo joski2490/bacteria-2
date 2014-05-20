@@ -2,7 +2,7 @@ function createRegion(params){
 
     var values = [];
 
-    function getValue(x, y, r){
+    function popValue(x, y, qty){
         var i = Math.floor(x/params.granularity),
             j = Math.floor(y/params.granularity),
             result;
@@ -10,14 +10,14 @@ function createRegion(params){
         if(values[i] === undefined || values[i][j] === undefined){
             result = 0;
         } else {
-            result = Math.min(values[i][j], r);
+            result = Math.min(values[i][j], qty);
             values[i][j] -= result;
         }
 
         return result;
     };
 
-    function setValue(x, y, r){
+    function pushValue(x, y, qty){
         var i = Math.floor(x/params.granularity),
             j = Math.floor(y/params.granularity);
         if(values[i] === undefined){
@@ -26,10 +26,10 @@ function createRegion(params){
         }
         if(values[i][j] === undefined){
             console.log('set ['+i+']['+j+']');
-            values[i][j] = r;
+            values[i][j] = qty;
         } else {
             console.log('addto ['+i+']['+j+']');
-            values[i][j] += r;
+            values[i][j] += qty;
         }
     };
 
@@ -50,8 +50,8 @@ function createRegion(params){
     }
 
     return {
-        getValue: getValue,
-        setValue: setValue,
+        popValue: popValue,
+        pushValue: pushValue,
         drawValues: drawValues
     }
 }
