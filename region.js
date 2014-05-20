@@ -75,10 +75,10 @@ function createRegion(params){
     }
 
     return {
-        popValue: popValue,
-        pushValue: pushValue,
-        getValue: getValue,
-        setValue: setValue,
+        pop: popValue,
+        push: pushValue,
+        get: getValue,
+        set: setValue,
         drawValues: drawValues
     }
 }

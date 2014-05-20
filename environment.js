@@ -20,21 +20,21 @@ var environment = function(params) {
         max: 100
     });
 
-    resources.pushValue(params.center.x,params.center.y,100);
+    resources.set(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
         for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
             var ratio = 400/r;
             if(i==params.center.x-r || i==params.center.x+r){
                 ratio = 200/r;
             }
-            resources.pushValue(i,params.center.y-r, ratio);
-            resources.pushValue(i,params.center.y+r, ratio);
-            resources.pushValue(params.center.x-r,i, ratio);
-            resources.pushValue(params.center.x+r,i, ratio);
+            resources.set(i,params.center.y-r, ratio);
+            resources.set(i,params.center.y+r, ratio);
+            resources.set(params.center.x-r,i, ratio);
+            resources.set(params.center.x+r,i, ratio);
         }
     }
 
-    water.setValue(100,100,50);
+    water.set(100,100,50);
 
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
@@ -60,7 +60,7 @@ var environment = function(params) {
                 new_list.push(b);
             } else {
                 var bact_coords = b.getCoords();
-                resources.pushValue(bact_coords.x, bact_coords.y, 10);
+                resources.push(bact_coords.x, bact_coords.y, 10);
             }
         });
 
@@ -81,7 +81,7 @@ var environment = function(params) {
         bacteria_list.forEach(function(b){
             if(Math.random()<params.proba.eat){
                 var bact_coords = b.getCoords();
-                b.eat(resources.popValue(bact_coords.x, bact_coords.y, 1));
+                b.eat(resources.pop(bact_coords.x, bact_coords.y, 1));
             }
         });
     };
