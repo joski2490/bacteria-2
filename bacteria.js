@@ -81,6 +81,10 @@ function generateBacteria(init_vars)
                     health -= 1;
                     x += dx;
                     y += dy;
+
+                    x = Math.min(Math.max(x,0),800);
+                    y = Math.min(Math.max(y,0),800);
+
                     dx = Math.random() - init_vars.move_balance_x;
                     dy = Math.random() - init_vars.move_balance_y;
                 }
