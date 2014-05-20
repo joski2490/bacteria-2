@@ -1,19 +1,27 @@
 var environment = function(params) {
 
     var bacteria_list = [];
-    var resources = [];
+    var resources = createRegion({
+        granularity: params.granularity,
+        color: {
+            red: 0,
+            green: 200,
+            blue: 0
+        },
+        max: 100
+    });
 
-    setResource(params.center.x,params.center.y,100);
+    resources.setValue(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
         for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
             var ratio = 400/r;
             if(i==params.center.x-r || i==params.center.x+r){
                 ratio = 200/r;
             }
-            setResource(i,params.center.y-r, ratio);
-            setResource(i,params.center.y+r, ratio);
-            setResource(params.center.x-r,i, ratio);
-            setResource(params.center.x+r,i, ratio);
+            resources.setValue(i,params.center.y-r, ratio);
+            resources.setValue(i,params.center.y+r, ratio);
+            resources.setValue(params.center.x-r,i, ratio);
+            resources.setValue(params.center.x+r,i, ratio);
         }
     }
 
@@ -21,54 +29,8 @@ var environment = function(params) {
         bacteria_list.push(bacteria);
     };
 
-    function getResource(x, y, r){
-        var i = Math.floor(x/params.granularity),
-            j = Math.floor(y/params.granularity),
-            result;
-
-        if(resources[i] === undefined || resources[i][j] === undefined){
-            result = 0;
-        } else {
-            result = Math.min(resources[i][j], r);
-            resources[i][j] -= result;
-        }
-
-        return result;
-    };
-
-    function setResource(x, y, r){
-        var i = Math.floor(x/params.granularity),
-            j = Math.floor(y/params.granularity);
-        if(resources[i] === undefined){
-            console.log('create ['+i+'][]');
-            resources[i] = [];
-        }
-        if(resources[i][j] === undefined){
-            console.log('set ['+i+']['+j+']');
-            resources[i][j] = r;
-        } else {
-            console.log('addto ['+i+']['+j+']');
-            resources[i][j] += r;
-        }
-    };
-
-    function drawResources(ctx){
-        for(var i=0; i<resources.length; i++){
-            if(resources[i] !== undefined){
-                for(var j=0; j<resources[i].length; j++){
-                    if(resources[i][j] !== undefined){
-                        var alpha = Math.min(resources[i][j] / 100, 1);
-                        ctx.fillStyle = "rgba(0,200,0,"+alpha+")";
-                        console.log('draw resource with alpha : '+alpha);
-                        ctx.fillRect(i*params.granularity, j*params.granularity, params.granularity, params.granularity);
-                    }
-                }
-            }
-        }
-    };
-
     function drawAll(ctx){
-        drawResources(ctx);
+        resources.drawValues(ctx);
         ctx.fillStyle = "rgb(0,0,0)";
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
@@ -86,7 +48,7 @@ var environment = function(params) {
                 new_list.push(b);
             } else {
                 var bact_coords = b.getCoords();
-                setResource(bact_coords.x, bact_coords.y, 10);
+                resources.setValue(bact_coords.x, bact_coords.y, 10);
             }
         });
 
@@ -107,7 +69,7 @@ var environment = function(params) {
         bacteria_list.forEach(function(b){
             if(Math.random()<params.proba.eat){
                 var bact_coords = b.getCoords();
-                b.eat(getResource(bact_coords.x, bact_coords.y, 1));
+                b.eat(resources.getValue(bact_coords.x, bact_coords.y, 1));
             }
         });
     };
