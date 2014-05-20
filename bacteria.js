@@ -19,6 +19,9 @@ function generateBacteria(init_vars)
         proba: {
             reproduction: 0.005,
             mutation: 0.1
+        },
+        color: {
+            variation: 200
         }
     };
 
@@ -42,9 +45,9 @@ function generateBacteria(init_vars)
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
             console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
 
-            color_red += Math.floor(Math.random() * 30 - 15);
-            color_green += Math.floor(Math.random() * 30 - 15);
-            color_blue += Math.floor(Math.random() * 30 - 15);
+            color_red += Math.floor(Math.random() * params.color.variation - params.color.variation/2);
+            color_green += Math.floor(Math.random() * params.color.variation - params.color.variation/2);
+            color_blue += Math.floor(Math.random() * params.color.variation - params.color.variation/2);
 
             color_red = Math.min(Math.max(color_red, 0), 255);
             color_green = Math.min(Math.max(color_green, 0), 255);
