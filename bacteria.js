@@ -12,12 +12,6 @@ function generateBacteria(init_vars)
             }
         }
     }
-    if(init_vars.proba === undefined){
-        init_vars.proba = {
-            reproduction: 0.0055,
-            mutation: 0.1
-        };
-    }
 
     var x = init_vars.x;
     var y = init_vars.y;
@@ -39,7 +33,11 @@ function generateBacteria(init_vars)
             x: x,
             y: y,
             move_balance_x: move_balance_x,
-            move_balance_y: move_balance_y
+            move_balance_y: move_balance_y,
+            proba: {
+                reproduction: init_vars.proba.reproduction,
+                mutation: init_vars.proba.mutation
+            }
         };
 
         return generateBacteria(parent_vars)

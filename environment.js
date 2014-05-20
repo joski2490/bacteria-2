@@ -4,7 +4,7 @@ var environment = function(params) {
     var resources = [];
 
     setResource(params.center.x,params.center.y,100);
-    for(var r=params.granularity; r<=10*params.granularity; r+=params.granularity){
+    for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
         for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
             var ratio = 400/r;
             if(i==params.center.x-r || i==params.center.x+r){
@@ -130,7 +130,7 @@ var environment = function(params) {
         x: 400,
         y: 400
     },
-    granularity: 10,
+    granularity: 40,
     proba: {
         eat: 0.5
     }
