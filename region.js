@@ -9,17 +9,21 @@ function createRegion(params){
             result;
 
         if(values[i] === undefined || values[i][j] === undefined){
-            result = 0;
+            if(typeof qty === "number"){
+                result = 0;
+            } else {
+                result = undefined;
+            }
         } else {
             if(typeof qty === "number"){
                 result = Math.min(values[i][j], qty);
                 values[i][j] -= result;
             } else {
                 var obj_index;
-                if(values[i][j][k] !== undefined){
+                if(values[i][j] !== undefined){
                     for(var k=0; k<values[i][j].length; k++){
                         if(values[i][j][k] === qty){
-                            obj_index=k;
+                            obj_index = k;
                         }
                     }
                 }
