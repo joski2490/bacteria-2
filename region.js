@@ -64,7 +64,11 @@ function createRegion(params){
             j = Math.floor(y/params.granularity),
             result;
 
-        if(values[i] === undefined || values[i][j] === undefined){
+        if(x === undefined){
+            result = values;
+        } else if(y === undefined){
+            result = values[i];
+        } else if(values[i] === undefined || values[i][j] === undefined){
             result = 0;
         } else {
             result = values[i][j];
@@ -89,7 +93,14 @@ function createRegion(params){
             if(values[i] !== undefined){
                 for(var j=0; j<values[i].length; j++){
                     if(values[i][j] !== undefined){
-                        var alpha = Math.min(values[i][j] / params.max, 1);
+                        var value;
+                        if(typeof values[i][j] === "number"){
+                            value = values[i][j];
+                        } else {
+                            value = values[i][j].length;
+                        }
+                        var alpha = Math.min(value / params.max, 1);
+
                         ctx.fillStyle = "rgba(" + params.color.red + "," + params.color.green + "," + params.color.blue + "," + alpha + ")";
                         console.log('draw region with alpha : '+alpha);
                         ctx.fillRect(i*params.granularity, j*params.granularity, params.granularity, params.granularity);

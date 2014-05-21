@@ -19,6 +19,15 @@ var environment = function(params) {
         },
         max: 100
     });
+    var bact_index = createRegion({
+        granularity: params.granularity,
+        color: {
+            red: 200,
+            green: 0,
+            blue: 0
+        },
+        max: 20
+    });
 
     resources.set(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
@@ -60,17 +69,35 @@ var environment = function(params) {
 
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
+        var bact_coords = bacteria.getCoords();
+        bact_index.push(bact_coords.x, bact_coords.y, bacteria);
     };
 
     function drawAll(ctx){
         resources.draw(ctx);
         water.draw(ctx);
+        bact_index.draw(ctx);
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
 
     function moveAll(){
         bacteria_list.forEach(function(b){
+            var bact_coords = b.getCoords();
+            var i = Math.floor(bact_coords.x/params.granularity),
+                j = Math.floor(bact_coords.y/params.granularity);
+
             b.move();
+
+            bact_coords = b.getCoords();
+            var i2 = Math.floor(bact_coords.x/params.granularity),
+                j2 = Math.floor(bact_coords.y/params.granularity);
+
+            if(i !== i2 || j !== j2){
+                console.log("moving bact !");
+                var old_b = bact_index.pop(i*params.granularity, j*params.granularity, b);
+                bact_index.push(i2*params.granularity, j2*params.granularity, old_b);
+            }
+
         })
     };
 
@@ -82,6 +109,7 @@ var environment = function(params) {
             } else {
                 var bact_coords = b.getCoords();
                 resources.push(bact_coords.x, bact_coords.y, 10);
+                bact_index.pop(bact_coords.x, bact_coords.y, b);
             }
         });
 
@@ -117,6 +145,7 @@ var environment = function(params) {
         addBacteria: addBacteria,
         getLength: function (){return bacteria_list.length;},
         mainLoop: mainLoop,
+        _index: bact_index
     };
 }({
     center: {
