@@ -11,8 +11,22 @@ function createRegion(params){
         if(values[i] === undefined || values[i][j] === undefined){
             result = 0;
         } else {
-            result = Math.min(values[i][j], qty);
-            values[i][j] -= result;
+            if(typeof qty === "number"){
+                result = Math.min(values[i][j], qty);
+                values[i][j] -= result;
+            } else {
+                var obj_index;
+                if(values[i][j][k] !== undefined){
+                    for(var k=0; k<values[i][j].length; k++){
+                        if(values[i][j][k] === qty){
+                            obj_index=k;
+                        }
+                    }
+                }
+                if(obj_index !== undefined){
+                    result = values[i][j].pop(obj_index);
+                }
+            }
         }
 
         return result;
@@ -25,12 +39,23 @@ function createRegion(params){
             console.log('create ['+i+'][]');
             values[i] = [];
         }
-        if(values[i][j] === undefined){
-            console.log('set ['+i+']['+j+']');
-            values[i][j] = qty;
+
+        if(typeof qty === "number"){
+            if(values[i][j] === undefined){
+                console.log('set ['+i+']['+j+']');
+                values[i][j] = qty;
+            } else {
+                console.log('addto ['+i+']['+j+']');
+                values[i][j] += qty;
+            }
         } else {
-            console.log('addto ['+i+']['+j+']');
-            values[i][j] += qty;
+            if(values[i][j] === undefined){
+                console.log('set ['+i+']['+j+']');
+                values[i][j] = [qty];
+            } else {
+                console.log('addto ['+i+']['+j+']');
+                values[i][j].push(qty);
+            }
         }
     };
 
