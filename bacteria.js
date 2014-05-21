@@ -10,7 +10,10 @@ function generateBacteria(init_vars)
                 red:0,
                 green:0,
                 blue:0
-            }
+            },
+            state: {
+                water_resistance: 0.5
+            },
         }
     }
 
@@ -22,6 +25,10 @@ function generateBacteria(init_vars)
         },
         color: {
             variation: 200
+        },
+        state: {
+            health: 200,
+            death_rate: 1
         }
     };
 
@@ -30,8 +37,9 @@ function generateBacteria(init_vars)
 
     var dx = Math.random() - init_vars.move_balance_x;
     var dy = Math.random() - init_vars.move_balance_y;
-    var health = 200;
+    var health = params.state.health;
     var living = true;
+    var underwater = false;
 
     function reproduceSelf(){
         var move_balance_x = init_vars.move_balance_x;
@@ -39,8 +47,10 @@ function generateBacteria(init_vars)
         var color_red = init_vars.color.red;
         var color_green = init_vars.color.green;
         var color_blue = init_vars.color.blue;
+        var water_resist = init_vars.state.water_resistance;
 
-        if(Math.random()<params.proba.mutation){
+        var mut_proba = params.proba.mutation + Math.min(get_death_rate(),10)/20;
+        if(Math.random() < mut_proba){
             move_balance_x += move_balance_x * (Math.random() - 0.5) * 2 * 0.25;
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
             console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
@@ -52,6 +62,8 @@ function generateBacteria(init_vars)
             color_red = Math.min(Math.max(color_red, 0), 255);
             color_green = Math.min(Math.max(color_green, 0), 255);
             color_blue = Math.min(Math.max(color_blue, 0), 255);
+
+            water_resist = 1 / (Math.random() * 100);
         }
         var parent_vars = {
             x: x,
@@ -62,11 +74,25 @@ function generateBacteria(init_vars)
                 red:color_red,
                 green:color_green,
                 blue:color_blue
+            },
+            state: {
+                water_resistance: water_resist
             }
         };
 
         return generateBacteria(parent_vars)
     };
+
+    function get_death_rate(){
+        var dying_rate = params.state.death_rate;
+        if(underwater){
+            dying_rate += params.state.death_rate / init_vars.state.water_resistance;
+        } else {
+            dying_rate += params.state.death_rate * init_vars.state.water_resistance;
+        }
+
+        return dying_rate;
+    }
 
     return {
         draw: function (ctx){
@@ -78,7 +104,7 @@ function generateBacteria(init_vars)
                 if(health<=0){
                     living = false;
                 } else {
-                    health -= 1;
+                    health -= get_death_rate();
                     x += dx;
                     y += dy;
 
@@ -92,13 +118,15 @@ function generateBacteria(init_vars)
         },
         reproduce: function(){
             var result = null;
-            if(living && Math.random()<params.proba.reproduction){
+            var repro_proba = params.proba.reproduction + Math.min(get_death_rate(),10)/1000;
+            if(living && Math.random() < repro_proba){
                 result = reproduceSelf();
             }
             return result;
         },
         isDead: function(){return !living;},
         getCoords: function() {return {x:x,y:y};},
-        eat: function(r) {health += r;}
+        eat: function(r) {health += r;},
+        setUnderwater: function(isWater) {underwater = isWater;}
     };
 }

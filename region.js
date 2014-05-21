@@ -1,6 +1,7 @@
 function createRegion(params){
 
     var values = [];
+    var hovering = undefined;
 
     function popValue(x, y, qty){
         var i = Math.floor(x/params.granularity),
@@ -71,7 +72,12 @@ function createRegion(params){
                 }
             }
         }
+    };
 
+    function hover(bact) {
+        if(hovering !== undefined){
+            hovering(bact);
+        }
     }
 
     return {
@@ -79,6 +85,8 @@ function createRegion(params){
         push: pushValue,
         get: getValue,
         set: setValue,
-        drawValues: drawValues
+        draw: drawValues,
+        onhover: function(funct){hovering = funct;},
+        hover: hover
     }
 }

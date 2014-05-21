@@ -23,23 +23,48 @@ var environment = function(params) {
     resources.set(params.center.x,params.center.y,100);
     for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
         for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
-            var ratio = params.granularity * 50/r;
+            var ratio = params.granularity * 100/r;
             resources.set(i,params.center.y-r, ratio);
             resources.set(i,params.center.y+r, ratio);
             resources.set(params.center.x-r,i, ratio);
             resources.set(params.center.x+r,i, ratio);
         }
     }
+    for(var r=5*params.granularity; r<=8*params.granularity; r+=params.granularity){
+        for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
+            var ratio = 20;
+            water.set(i,params.center.y-r, ratio);
+            water.set(i,params.center.y+r, ratio);
+            water.set(params.center.x-r,i, ratio);
+            water.set(params.center.x+r,i, ratio);
+        }
+    }
+
 
     water.set(100,100,50);
+
+    resources.onhover(function(b){
+        if(Math.random()<params.proba.eat){
+            var bact_coords = b.getCoords();
+            b.eat(resources.pop(bact_coords.x, bact_coords.y, 1));
+        }
+    });
+    water.onhover(function(b){
+        var bact_coords = b.getCoords();
+        if(water.get(bact_coords.x, bact_coords.y) > 0){
+            b.setUnderwater(true);
+        } else {
+            b.setUnderwater(false);
+        }
+    });
 
     function addBacteria(bacteria){
         bacteria_list.push(bacteria);
     };
 
     function drawAll(ctx){
-        resources.drawValues(ctx);
-        water.drawValues(ctx);
+        resources.draw(ctx);
+        water.draw(ctx);
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
 
@@ -73,12 +98,10 @@ var environment = function(params) {
         }
     };
 
-    function nourrishAll(){
+    function regionEffects(){
         bacteria_list.forEach(function(b){
-            if(Math.random()<params.proba.eat){
-                var bact_coords = b.getCoords();
-                b.eat(resources.pop(bact_coords.x, bact_coords.y, 1));
-            }
+            resources.hover(b);
+            water.hover(b);
         });
     };
 
@@ -87,7 +110,7 @@ var environment = function(params) {
         moveAll();
         reproduceAll();
         clean();
-        nourrishAll();
+        regionEffects();
     };
 
     return {
@@ -100,7 +123,7 @@ var environment = function(params) {
         x: 400,
         y: 400
     },
-    granularity: 40,
+    granularity: 10,
     proba: {
         eat: 0.5
     }
