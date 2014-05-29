@@ -161,7 +161,7 @@ var environment = function(params) {
         x: 400,
         y: 400
     },
-    granularity: 10,
+    granularity: 15,
     proba: {
         eat: 0.5
     }
