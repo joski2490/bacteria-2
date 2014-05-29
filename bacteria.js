@@ -1,5 +1,13 @@
 function generateBacteria(init_vars)
 {
+    const MODULE_NAME = "bact.bacteria";
+    function log(message){
+        logger.log(MODULE_NAME, message);
+    }
+    function debug(message){
+        logger.debug(MODULE_NAME, message);
+    }
+
     if(init_vars === undefined){
         var init_vars = {
             x: 400 + (Math.random() * 100 - 50),
@@ -53,7 +61,7 @@ function generateBacteria(init_vars)
         if(Math.random() < mut_proba){
             move_balance_x += move_balance_x * (Math.random() - 0.5) * 2 * 0.25;
             move_balance_y += move_balance_y * (Math.random() - 0.5) * 2 * 0.25;
-            console.log('new movebalance : ' + move_balance_x + ';' + move_balance_y);
+            debug('new movebalance : ' + move_balance_x + ';' + move_balance_y);
 
             color_red += Math.floor(Math.random() * params.color.variation - params.color.variation/2);
             color_green += Math.floor(Math.random() * params.color.variation - params.color.variation/2);
@@ -127,6 +135,7 @@ function generateBacteria(init_vars)
         isDead: function(){return !living;},
         getCoords: function() {return {x:x,y:y};},
         eat: function(r) {health += r;},
-        setUnderwater: function(isWater) {underwater = isWater;}
+        setUnderwater: function(isWater) {underwater = isWater;},
+        _hash: Math.floor(Math.random()*1e5)
     };
 }

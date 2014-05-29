@@ -1,5 +1,16 @@
 var environment = function(params) {
 
+    const MODULE_NAME = "bact.environnement";
+    function log(message){
+        logger.log(MODULE_NAME, message);
+    }
+    function debug(message){
+        logger.debug(MODULE_NAME, message);
+    }
+    function warn(message){
+        logger.warn(MODULE_NAME, message);
+    }
+
     var bacteria_list = [];
     var resources = createRegion({
         granularity: params.granularity,
@@ -71,6 +82,7 @@ var environment = function(params) {
         bacteria_list.push(bacteria);
         var bact_coords = bacteria.getCoords();
         bact_index.push(bact_coords.x, bact_coords.y, bacteria);
+        log('adding '+bacteria._hash+' at ('+bact_coords.x+", "+bact_coords.y+')');
     };
 
     function drawAll(ctx){
@@ -83,21 +95,18 @@ var environment = function(params) {
     function moveAll(){
         bacteria_list.forEach(function(b){
             var bact_coords = b.getCoords();
-            var i = Math.floor(bact_coords.x/params.granularity),
-                j = Math.floor(bact_coords.y/params.granularity);
+            debug('moving bacteria '+b._hash+' ('+bact_coords.x+", "+bact_coords.y+')');
+            if(bact_index.pop(bact_coords.x, bact_coords.y, b) === undefined){
+                warn('bacteria '+b._hash+' cant be found in index ('+bact_coords.x+", "+bact_coords.y+') !');
+            }else{
+                debug('poping '+b._hash+' successful');
+            }
 
             b.move();
 
             bact_coords = b.getCoords();
-            var i2 = Math.floor(bact_coords.x/params.granularity),
-                j2 = Math.floor(bact_coords.y/params.granularity);
-
-            if(i !== i2 || j !== j2){
-                console.log("moving bact !");
-                var old_b = bact_index.pop(i*params.granularity, j*params.granularity, b);
-                bact_index.push(i2*params.granularity, j2*params.granularity, old_b);
-            }
-
+            bact_index.push(bact_coords.x, bact_coords.y, b);
+            debug('pushing '+b._hash+' at ('+bact_coords.x+", "+bact_coords.y+')');
         })
     };
 
@@ -121,7 +130,7 @@ var environment = function(params) {
             var newBact = bacteria_list[i].reproduce();
             if(newBact !== null) {
                 addBacteria(newBact);
-                console.log('new !');
+                debug('new bact !');
             }
         }
     };
