@@ -60,9 +60,6 @@ var environment = function(params) {
         }
     }
 
-
-    water.set(100,100,50);
-
     resources.onhover(function(b){
         if(Math.random()<params.proba.eat){
             var bact_coords = b.getCoords();
