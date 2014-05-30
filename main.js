@@ -26,7 +26,7 @@ window.addEventListener("load", function (event){
 
     var last_time = Date.now();
     var frame_count = 0;
-    var current_fps = 0;
+    var current_fps;
 
     function renderLoop() {
         var time_interval = (Date.now() - last_time) / 1000;
