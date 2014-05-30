@@ -39,7 +39,8 @@ function generateBacteria(init_vars)
         },
         state: {
             health: 200,
-            death_rate: 1
+            death_rate: 1,
+            agressivity_per_diff_rate: 10
         }
     };
 
@@ -169,10 +170,12 @@ function generateBacteria(init_vars)
             return lives_lost;
         },
         attack: function(b) {
-            if(getApparenceDiffRate(b) > params.proba.attack_per_diff){
+            var diff_rate = getApparenceDiffRate(b);
+            if(diff_rate > params.proba.attack_per_diff){
                 log("Attacking "+b._hash);
+
                 attacking_bact = b;
-                health += b.defend(10);
+                health += b.defend(Math.floor(params.state.agressivity_per_diff_rate * diff_rate / params.proba.attack_per_diff));
             } else {
                 log("Not attacking "+b._hash);
             }
