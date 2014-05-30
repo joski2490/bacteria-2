@@ -21,6 +21,15 @@ var environment = function(params) {
         },
         max: 100
     });
+    var fire = createRegion({
+        granularity: params.granularity,
+        color: {
+            red: 255,
+            green: 150,
+            blue: 0
+        },
+        max: 10
+    });
     var water = createRegion({
         granularity: params.granularity,
         color: {
@@ -40,25 +49,22 @@ var environment = function(params) {
         max: 50
     });
 
+    function presetRegion(region, min, max, ratioFunc){
+        for(var r=min*params.granularity; r<=max*params.granularity; r+=params.granularity){
+            for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
+                var ratio = ratioFunc(r);
+                region.set(i,params.center.y-r, ratio);
+                region.set(i,params.center.y+r, ratio);
+                region.set(params.center.x-r,i, ratio);
+                region.set(params.center.x+r,i, ratio);
+            }
+        }
+    }
+
     resources.set(params.center.x,params.center.y,100);
-    for(var r=params.granularity; r<=4*params.granularity; r+=params.granularity){
-        for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
-            var ratio = params.granularity * 100/r;
-            resources.set(i,params.center.y-r, ratio);
-            resources.set(i,params.center.y+r, ratio);
-            resources.set(params.center.x-r,i, ratio);
-            resources.set(params.center.x+r,i, ratio);
-        }
-    }
-    for(var r=5*params.granularity; r<=8*params.granularity; r+=params.granularity){
-        for(var i=params.center.x-r; i<=params.center.x+r; i+=params.granularity){
-            var ratio = 20;
-            water.set(i,params.center.y-r, ratio);
-            water.set(i,params.center.y+r, ratio);
-            water.set(params.center.x-r,i, ratio);
-            water.set(params.center.x+r,i, ratio);
-        }
-    }
+    presetRegion(resources, 1, 4, function(r){return params.granularity * 100/r});
+    presetRegion(water, 5, 8, function(r){return 20});
+    presetRegion(fire, 9, 9, function(r){return 5});
 
     resources.onhover(function(b){
         if(Math.random()<params.proba.eat){
@@ -72,6 +78,12 @@ var environment = function(params) {
             b.setUnderwater(true);
         } else {
             b.setUnderwater(false);
+        }
+    });
+    fire.onhover(function(b){
+        var bact_coords = b.getCoords();
+        if(fire.get(bact_coords.x, bact_coords.y) > 0){
+            b.die();
         }
     });
     bact_index.onhover(function(b){
@@ -103,6 +115,7 @@ var environment = function(params) {
     function drawAll(ctx){
         resources.draw(ctx);
         water.draw(ctx);
+        fire.draw(ctx);
         bact_index.draw(ctx);
         bacteria_list.forEach(function(b){b.draw(ctx);})
     };
@@ -154,6 +167,7 @@ var environment = function(params) {
         bacteria_list.forEach(function(b){
             resources.hover(b);
             water.hover(b);
+            fire.hover(b);
             bact_index.hover(b);
         });
     };

@@ -54,6 +54,10 @@ function generateBacteria(init_vars)
     var underwater = false;
     var attacking_bact;
 
+    function die(){
+        living = false;
+    }
+
     function mutateParameters(){
         var move_balance_x = init_vars.move_balance_x;
         var move_balance_y = init_vars.move_balance_y;
@@ -136,7 +140,7 @@ function generateBacteria(init_vars)
         move: function(){
             if(living){
                 if(health<=0){
-                    living = false;
+                    die();
                 } else {
                     health -= get_death_rate();
                     x += dx;
@@ -179,6 +183,7 @@ function generateBacteria(init_vars)
             } else {
                 log("Not attacking "+b._hash);
             }
-        }
+        },
+        die: die
     };
 }
