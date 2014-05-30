@@ -2,6 +2,7 @@ console.log('loading');
 
 window.addEventListener("load", function (event){
     var canvas = document.getElementById("main");
+    var stats = document.getElementById("stats");
     var play_chkb = document.getElementById("play");
     var ctx = canvas.getContext('2d');
     var timer = Date.now();
@@ -13,9 +14,19 @@ window.addEventListener("load", function (event){
         environment.addBacteria(generateBacteria());
     }
 
+    var statsText = "";
+    function addStatLine(text){
+        statsText += text + "\n";
+    }
+    function updateStat(){
+        stats.innerHTML = statsText;
+        statsText = "";
+    }
+
     function renderLoop() {
+        stats.innerHTML = "";
         if(looping){
-            console.log('throttling at ' + environment.getLength()+' bacteria');
+            addStatLine('throttling at ' + environment.getLength()+' bacteria');
         }
         if(play_chkb.checked){
             looping = true;
@@ -23,6 +34,9 @@ window.addEventListener("load", function (event){
             environment.mainLoop(ctx);
             looping = false;
         }
+
+        addStatLine("Current bacteria nb : "+environment.getLength());
+        updateStat();
 
         window.requestAnimationFrame(renderLoop);
     }
