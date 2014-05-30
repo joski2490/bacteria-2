@@ -1,6 +1,8 @@
 function generateBacteria(init_vars)
 {
     const MODULE_NAME = "bact.bacteria";
+    const MAX_APPARENCE_DIFF = Math.hypot(255,255,255);
+
     function log(message){
         logger.log(MODULE_NAME, message);
     }
@@ -29,7 +31,8 @@ function generateBacteria(init_vars)
     var params = {
         proba: {
             reproduction: 0.005,
-            mutation: 0.1
+            mutation: 0.1,
+            attack_per_diff: 0.1
         },
         color: {
             variation: 200
@@ -108,6 +111,12 @@ function generateBacteria(init_vars)
         return dying_rate;
     }
 
+    function getApparenceDiffRate(b){
+        return Math.hypot(b.getColor().red - init_vars.color.red,
+                          b.getColor().green - init_vars.color.green,
+                          b.getColor().blue - init_vars.color.blue) / MAX_APPARENCE_DIFF;
+    }
+
     return {
         draw: function (ctx){
             ctx.fillStyle = "rgb(" + init_vars.color.red + "," + init_vars.color.green + "," + init_vars.color.blue + ")";
@@ -150,6 +159,7 @@ function generateBacteria(init_vars)
         },
         isDead: function(){return !living;},
         getCoords: function() {return {x:x,y:y};},
+        getColor: function() {return {red:init_vars.color.red,green:init_vars.color.green,blue:init_vars.color.blue};},
         eat: function(r) {health += r;},
         setUnderwater: function(isWater) {underwater = isWater;},
         _hash: Math.floor(Math.random()*1e5),
@@ -159,9 +169,13 @@ function generateBacteria(init_vars)
             return lives_lost;
         },
         attack: function(b) {
-            log("Attacking "+b._hash);
-            attacking_bact = b;
-            health += b.defend(10);
+            if(getApparenceDiffRate(b) > params.proba.attack_per_diff){
+                log("Attacking "+b._hash);
+                attacking_bact = b;
+                health += b.defend(10);
+            } else {
+                log("Not attacking "+b._hash);
+            }
         }
     };
 }
