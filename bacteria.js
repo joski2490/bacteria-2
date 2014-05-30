@@ -115,7 +115,7 @@ function generateBacteria(init_vars)
                 ctx.lineTo(bact_coords.x, bact_coords.y);
                 ctx.stroke();
 
-                attacking_bact = undefined
+                attacking_bact = undefined;
             }
         },
         move: function(){
