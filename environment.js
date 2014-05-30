@@ -86,6 +86,12 @@ var environment = function(params) {
             b.die();
         }
     });
+    fire.ondraw(function(i, j){
+        var x = i*params.granularity,
+            y = j*params.granularity;
+        var value = Math.min(Math.max(fire.get(x,y) + (Math.random() - 0.5)/5 , 3) ,8)
+        fire.set(x, y, value);
+    });
     bact_index.onhover(function(b){
         if(Math.random()<params.proba.attack){
             var bact_coords = b.getCoords();

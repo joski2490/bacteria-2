@@ -13,6 +13,7 @@ function createRegion(params){
 
     var values = [];
     var hovering = undefined;
+    var beforeDraw = undefined;
 
     function logSpace(i,j){
         if(values[i] !== undefined && values[i][j] !== undefined && values[i][j].length>0){
@@ -126,6 +127,10 @@ function createRegion(params){
             if(values[i] !== undefined){
                 for(var j=0; j<values[i].length; j++){
                     if(values[i][j] !== undefined){
+                        if(beforeDraw !== undefined){
+                            beforeDraw(i, j);
+                        }
+
                         var value;
                         if(typeof values[i][j] === "number"){
                             value = values[i][j];
@@ -156,6 +161,7 @@ function createRegion(params){
         set: setValue,
         draw: drawValues,
         onhover: function(funct){hovering = funct;},
-        hover: hover
+        hover: hover,
+        ondraw: function(funct){beforeDraw = funct;}
     }
 }
