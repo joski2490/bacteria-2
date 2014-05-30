@@ -27,5 +27,5 @@ var logger = (function(enabledModules){
 })({
     'bact.region': 2,
     'bact.environnement': 2,
-    'bact.bacteria': 1
+    'bact.bacteria': 2
 })
