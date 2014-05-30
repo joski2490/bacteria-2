@@ -50,7 +50,7 @@ function generateBacteria(init_vars)
     var underwater = false;
     var attacking_bact;
 
-    function reproduceSelf(){
+    function mutateParameters(){
         var move_balance_x = init_vars.move_balance_x;
         var move_balance_y = init_vars.move_balance_y;
         var color_red = init_vars.color.red;
@@ -74,7 +74,8 @@ function generateBacteria(init_vars)
 
             water_resist = 1 / (Math.random() * 100);
         }
-        var parent_vars = {
+
+        return {
             x: x,
             y: y,
             move_balance_x: move_balance_x,
@@ -89,6 +90,10 @@ function generateBacteria(init_vars)
             }
         };
 
+    }
+
+    function reproduceSelf(){
+        var parent_vars = mutateParameters();
         return generateBacteria(parent_vars)
     };
 
