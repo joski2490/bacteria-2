@@ -25,6 +25,7 @@ var logger = (function(enabledModules){
         }
     };
 })({
-    'bact.region': 1,
+    'bact.region': 2,
     'bact.environnement': 2,
+    'bact.bacteria': 1
 })

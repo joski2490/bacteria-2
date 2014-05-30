@@ -37,7 +37,7 @@ var environment = function(params) {
             green: 0,
             blue: 0
         },
-        max: 20
+        max: 50
     });
 
     resources.set(params.center.x,params.center.y,100);
@@ -75,6 +75,24 @@ var environment = function(params) {
             b.setUnderwater(true);
         } else {
             b.setUnderwater(false);
+        }
+    });
+    bact_index.onhover(function(b){
+        if(Math.random()<params.proba.attack){
+            var bact_coords = b.getCoords();
+            var current_list = bact_index.get(bact_coords.x,bact_coords.y);
+            if(current_list.length > 1){
+                var bact_list = [];
+
+                current_list.forEach(function(b2){
+                    if(b !== b2){
+                        bact_list.push(b2);
+                    }
+                });
+                var rand_bact_index = Math.floor(Math.random()*bact_list.length);
+
+                b.attack(bact_list[rand_bact_index]);
+            }
         }
     });
 
@@ -139,6 +157,7 @@ var environment = function(params) {
         bacteria_list.forEach(function(b){
             resources.hover(b);
             water.hover(b);
+            bact_index.hover(b);
         });
     };
 
@@ -163,6 +182,7 @@ var environment = function(params) {
     },
     granularity: 15,
     proba: {
-        eat: 0.5
+        eat: 0.5,
+        attack: 0.01
     }
 });

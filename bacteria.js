@@ -48,6 +48,7 @@ function generateBacteria(init_vars)
     var health = params.state.health;
     var living = true;
     var underwater = false;
+    var attacking_bact;
 
     function reproduceSelf(){
         var move_balance_x = init_vars.move_balance_x;
@@ -106,6 +107,16 @@ function generateBacteria(init_vars)
         draw: function (ctx){
             ctx.fillStyle = "rgb(" + init_vars.color.red + "," + init_vars.color.green + "," + init_vars.color.blue + ")";
             ctx.fillRect(x-1,y-1,2,2);
+
+            if(attacking_bact !== undefined){
+                var bact_coords = attacking_bact.getCoords();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(bact_coords.x, bact_coords.y);
+                ctx.stroke();
+
+                attacking_bact = undefined
+            }
         },
         move: function(){
             if(living){
@@ -136,6 +147,16 @@ function generateBacteria(init_vars)
         getCoords: function() {return {x:x,y:y};},
         eat: function(r) {health += r;},
         setUnderwater: function(isWater) {underwater = isWater;},
-        _hash: Math.floor(Math.random()*1e5)
+        _hash: Math.floor(Math.random()*1e5),
+        defend: function(attack_strenght) {
+            var lives_lost = attack_strenght;
+            health -= lives_lost;
+            return lives_lost;
+        },
+        attack: function(b) {
+            log("Attacking "+b._hash);
+            attacking_bact = b;
+            health += b.defend(10);
+        }
     };
 }
