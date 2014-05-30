@@ -3,6 +3,7 @@ console.log('loading');
 window.addEventListener("load", function (event){
     var canvas = document.getElementById("main");
     var stats = document.getElementById("stats");
+    var statsMeter = document.getElementById("statsMeter");
     var play_chkb = document.getElementById("play");
     var ctx = canvas.getContext('2d');
     var timer = Date.now();
@@ -36,6 +37,7 @@ window.addEventListener("load", function (event){
         }
 
         addStatLine("Current bacteria nb : "+environment.getLength());
+        statsMeter.setAttribute("value", environment.getLength());
         updateStat();
 
         window.requestAnimationFrame(renderLoop);
