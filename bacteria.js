@@ -80,7 +80,7 @@ function generateBacteria(init_vars)
             color_green = Math.min(Math.max(color_green, 0), 255);
             color_blue = Math.min(Math.max(color_blue, 0), 255);
 
-            water_resist = 1 / (Math.random() * 100);
+            water_resist = 5 / (Math.random() * 100);
         }
 
         return {

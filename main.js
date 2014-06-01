@@ -26,13 +26,28 @@ window.addEventListener("load", function (event){
     var last_time = Date.now();
     var frame_count = 0;
     var current_fps;
+    var perfs = [];
+    var perf_granularity = 50;
 
     function renderLoop() {
+        var current_bact_nb = environment.getLength();
         var time_interval = (Date.now() - last_time) / 1000;
         if(time_interval > 1){
             current_fps = Math.floor(frame_count / time_interval);
             last_time = Date.now();
             frame_count = 0;
+
+            var perf_index = Math.floor(current_bact_nb/perf_granularity);
+            if(perfs[perf_index] === undefined){
+                perfs[perf_index] = {
+                    medium_fps: current_fps,
+                    count: 1
+                }
+            } else {
+                // b = (n*x + y) / (n+1) = x + (y-x)/(n+1)
+                perfs[perf_index].count += 1;
+                perfs[perf_index].medium_fps += (current_fps - perfs[perf_index].medium_fps) / perfs[perf_index].count;
+            }
         }
         frame_count++;
         addStatLine("Current FPS = " + current_fps);
@@ -43,9 +58,13 @@ window.addEventListener("load", function (event){
             environment.mainLoop(ctx);
         }
 
-        addStatLine("Current bacteria nb : "+environment.getLength());
-        statsMeter.setAttribute("value", environment.getLength());
+        addStatLine("Current bacteria nb : "+current_bact_nb);
+        statsMeter.setAttribute("value", current_bact_nb);
         updateStat();
+
+        perfs.forEach(function(p, i){
+            addStatLine("Perfs["+(i*perf_granularity)+"-"+((i+1)*perf_granularity)+"]=" + Math.floor(p.medium_fps));
+        });
 
         window.requestAnimationFrame(renderLoop);
     }
