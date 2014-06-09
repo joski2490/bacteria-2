@@ -1,5 +1,16 @@
 console.log('loading');
 
+if(Math.hypot === undefined){
+    console.warn("Redefining Math.hypot");
+    Math.hypot = function(){
+        var result = 0;
+        for(var i=0; i<arguments.length; i++){
+            result += Math.pow(arguments[i], 2);
+        }
+        return Math.sqrt(result);
+    };
+}
+
 window.addEventListener("load", function (event){
     var canvas = document.getElementById("main");
     var stats = document.getElementById("stats");
