@@ -26,8 +26,6 @@ window.addEventListener("load", function (event){
     var last_time = Date.now();
     var frame_count = 0;
     var current_fps;
-    var perfs = [];
-    var perf_granularity = 50;
 
     function renderLoop() {
         var current_bact_nb = environment.getLength();
@@ -38,17 +36,7 @@ window.addEventListener("load", function (event){
             frame_count = 0;
 
             if(play_chkb.checked) {
-                var perf_index = Math.floor(current_bact_nb/perf_granularity);
-                if(perfs[perf_index] === undefined){
-                    perfs[perf_index] = {
-                        medium_fps: current_fps,
-                        count: 1
-                    }
-                } else {
-                    // b = (n*x + y) / (n+1) = x + (y-x)/(n+1)
-                    perfs[perf_index].count += 1;
-                    perfs[perf_index].medium_fps += (current_fps - perfs[perf_index].medium_fps) / perfs[perf_index].count;
-                }
+                logger.register_perfs(current_bact_nb, current_fps);
             }
         }
         frame_count++;
@@ -64,9 +52,7 @@ window.addEventListener("load", function (event){
         statsMeter.setAttribute("value", current_bact_nb);
         updateStat();
 
-        perfs.forEach(function(p, i){
-            addStatLine("Perfs["+(i*perf_granularity)+"-"+((i+1)*perf_granularity)+"]=" + Math.floor(p.medium_fps));
-        });
+        addStatLine(logger.output_perfs());
 
         window.requestAnimationFrame(renderLoop);
     }
