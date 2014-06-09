@@ -93,9 +93,11 @@ var environment = function(params) {
         fire.set(x, y, value);
     });
     bact_index.onhover(function(b){
-        if(Math.random()<params.proba.attack){
-            var bact_coords = b.getCoords();
-            var current_list = bact_index.get(bact_coords.x,bact_coords.y);
+        var bact_coords = b.getCoords();
+        var current_list = bact_index.get(bact_coords.x,bact_coords.y);
+        var attack_proba = Math.min(params.proba.max_attack, params.proba.attack * current_list.length);
+
+        if(Math.random() < attack_proba){
             if(current_list.length > 1){
                 var bact_list = [];
 
@@ -200,6 +202,7 @@ var environment = function(params) {
     granularity: 15,
     proba: {
         eat: 0.5,
-        attack: 0.01
+        attack: 0.01,
+        max_attack: 0.15,
     }
 });
