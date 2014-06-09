@@ -30,7 +30,7 @@ function generateBacteria(init_vars)
     //fixed
     var params = {
         proba: {
-            reproduction: 0.005,
+            reproduction: 0.006,
             mutation: 0.1,
             attack_per_diff: 0.1
         },

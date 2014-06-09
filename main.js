@@ -37,16 +37,18 @@ window.addEventListener("load", function (event){
             last_time = Date.now();
             frame_count = 0;
 
-            var perf_index = Math.floor(current_bact_nb/perf_granularity);
-            if(perfs[perf_index] === undefined){
-                perfs[perf_index] = {
-                    medium_fps: current_fps,
-                    count: 1
+            if(play_chkb.checked) {
+                var perf_index = Math.floor(current_bact_nb/perf_granularity);
+                if(perfs[perf_index] === undefined){
+                    perfs[perf_index] = {
+                        medium_fps: current_fps,
+                        count: 1
+                    }
+                } else {
+                    // b = (n*x + y) / (n+1) = x + (y-x)/(n+1)
+                    perfs[perf_index].count += 1;
+                    perfs[perf_index].medium_fps += (current_fps - perfs[perf_index].medium_fps) / perfs[perf_index].count;
                 }
-            } else {
-                // b = (n*x + y) / (n+1) = x + (y-x)/(n+1)
-                perfs[perf_index].count += 1;
-                perfs[perf_index].medium_fps += (current_fps - perfs[perf_index].medium_fps) / perfs[perf_index].count;
             }
         }
         frame_count++;
