@@ -169,7 +169,7 @@ function generateBacteria(init_vars)
         setUnderwater: function(isWater) {underwater = isWater;},
         _hash: Math.floor(Math.random()*1e5),
         defend: function(attack_strenght) {
-            var lives_lost = attack_strenght;
+            var lives_lost = Math.min(health, attack_strenght);
             health -= lives_lost;
             return lives_lost;
         },
