@@ -7,6 +7,7 @@ var logger = (function(enabledModules){
 
     var perfs = [];
     var perf_granularity = 50;
+    var graph_granularity = 10;
     var max_perf = 1;
 
     function consoleLog(mod, log, level){
@@ -43,7 +44,7 @@ var logger = (function(enabledModules){
 
     function output_graph(){
         var graph="  ^\n";
-        for(var i=Math.ceil(max_perf); i>=0; i-=Math.ceil(max_perf/5)){
+        for(var i=Math.ceil(max_perf); i>=0; i-=Math.ceil(max_perf/graph_granularity)){
             var line;
             if(i >= 10){
                 line = ""+i+"|";
@@ -52,7 +53,7 @@ var logger = (function(enabledModules){
             }
 
             perfs.forEach(function(perf_value){
-                if(perf_value.medium_fps <= i && perf_value.medium_fps > (i-Math.ceil(max_perf/5)) ) {
+                if(perf_value.medium_fps <= i && perf_value.medium_fps > (i-Math.ceil(max_perf/graph_granularity)) ) {
                     line +="*";
                 }else{
                     line +=" ";
