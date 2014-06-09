@@ -52,7 +52,7 @@ window.addEventListener("load", function (event){
         statsMeter.setAttribute("value", current_bact_nb);
         updateStat();
 
-        addStatLine(logger.output_perfs());
+        addStatLine(logger.output_graph());
 
         window.requestAnimationFrame(renderLoop);
     }

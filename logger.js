@@ -7,6 +7,7 @@ var logger = (function(enabledModules){
 
     var perfs = [];
     var perf_granularity = 50;
+    var max_perf = 1;
 
     function consoleLog(mod, log, level){
         var current_level = enabledModules[mod];
@@ -28,6 +29,7 @@ var logger = (function(enabledModules){
             perfs[perf_index].count += 1;
             perfs[perf_index].medium_fps += (current_fps - perfs[perf_index].medium_fps) / perfs[perf_index].count;
         }
+        max_perf = Math.max(max_perf, perfs[perf_index].medium_fps);
     }
 
     function output_perfs(){
@@ -37,6 +39,34 @@ var logger = (function(enabledModules){
         });
 
         return str;
+    }
+
+    function output_graph(){
+        var graph="  ^\n";
+        for(var i=Math.ceil(max_perf); i>=0; i-=Math.ceil(max_perf/5)){
+            var line;
+            if(i >= 10){
+                line = ""+i+"|";
+            } else {
+                line = " "+i+"|";
+            }
+
+            perfs.forEach(function(perf_value){
+                if(perf_value.medium_fps <= i && perf_value.medium_fps > (i-Math.ceil(max_perf/5)) ) {
+                    line +="*";
+                }else{
+                    line +=" ";
+                }
+            });
+            graph += line + "\n";
+        }
+        graph += "  +";
+        perfs.forEach(function(){
+            graph += "-";
+        });
+        graph += ">\n";
+
+        return graph;
     }
 
     return {
@@ -50,7 +80,8 @@ var logger = (function(enabledModules){
             consoleLog(mod, log, LEVEL_WARN);
         },
         register_perfs: register_perfs,
-        output_perfs: output_perfs
+        output_perfs: output_perfs,
+        output_graph: output_graph
     };
 })({
     'bact.region': 2,
