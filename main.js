@@ -26,6 +26,7 @@ window.addEventListener("load", function (event){
     var last_time = Date.now();
     var frame_count = 0;
     var current_fps;
+    var max_perf_score = 0;
 
     function renderLoop() {
         var current_bact_nb = environment.getLength();
@@ -37,10 +38,12 @@ window.addEventListener("load", function (event){
 
             if(play_chkb.checked) {
                 logger.register_perfs(current_bact_nb, current_fps);
+                max_perf_score = Math.max(max_perf_score, current_fps * current_bact_nb);
             }
         }
         frame_count++;
         addStatLine("Current FPS = " + current_fps);
+        addStatLine("Max perfs score = " + max_perf_score);
 
         stats.innerHTML = "";
         if(play_chkb.checked){
