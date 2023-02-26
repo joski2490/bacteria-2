@@ -168,16 +168,16 @@ function generateBacteria(init_vars)
         getSpec: function() {return Math.floor((Math.hypot(getColor.red,getColor.green,getColor.blue)/100));},
         setSpec: function() {
             if (living == true ){
-                if (getSpec == 0) {specCount[0] += 1;};
-                if (getSpec == 1) {specCount[1] += 1;};
-                if (getSpec == 2) {specCount[2] += 1;);
-                else specCount += 1;
+                if (getSpec == 0) {environment.specCount[0] += 1;};
+                if (getSpec == 1) {environment.specCount[1] += 1;};
+                if (getSpec == 2) {environment.specCount[2] += 1;);
+                else environment.specCount += 1;
              }
              else {
-                 if (getSpec == 0) {specCount[0] -= 1;};
-                 if (getSpec == 1) {specCount[1] -= 1;};
-                 if (getSpec == 2) {specCount[2] -= 1;);
-                 else specCount -= 1;
+                 if (getSpec == 0) {environment.specCount[0] -= 1;};
+                 if (getSpec == 1) {environment.specCount[1] -= 1;};
+                 if (getSpec == 2) {environment.specCount[2] -= 1;);
+                 else environment.specCount -= 1;
              }
         }
         eat: function(r) {health += r;},
