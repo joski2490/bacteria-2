@@ -179,7 +179,7 @@ function generateBacteria(init_vars)
                  if (getSpec == 2) {environment.specCount[2] -= 1;);
                  else environment.specCount -= 1;
              }
-        }
+        },
         eat: function(r) {health += r;},
         setUnderwater: function(isWater) {underwater = isWater;},
         _hash: Math.floor(Math.random()*1e5),
