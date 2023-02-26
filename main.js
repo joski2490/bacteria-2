@@ -41,7 +41,7 @@ window.addEventListener("load", function (event){
 
     function renderLoop() {
         var current_bact_nb = environment.getLength();
-        var curSpec = [environment.specCount.red, environment.specCount.green, environment.specCount.blue];
+      //  var curSpec = [environment.specCount.red, environment.specCount.green, environment.specCount.blue];
         var time_interval = (Date.now() - last_time) / 1000;
         if(time_interval > 1){
             current_fps = Math.floor(frame_count / time_interval);
@@ -56,10 +56,10 @@ window.addEventListener("load", function (event){
         frame_count++;
         addStatLine("Current FPS = " + current_fps);
         addStatLine("Max perfs score = " + max_perf_score);
-        addStatLine("Spec 1 = " + curSpec[0]);
+   /*     addStatLine("Spec 1 = " + curSpec[0]);
         addStatLine("Spec 2 = " + curSpec[1]);
         addStatLine("Spec 3 = " + curSpec[2]);
-
+*/
         stats.innerHTML = "";
         if(play_chkb.checked){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
