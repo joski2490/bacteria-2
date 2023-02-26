@@ -20,7 +20,7 @@ var environment = function(params) {
             green: 200,
             blue: 0
         },
-        max: 100
+        max: 500
     });
     var fire = createRegion({
         granularity: params.granularity,
@@ -29,7 +29,7 @@ var environment = function(params) {
             green: 150,
             blue: 0
         },
-        max: 10
+        max: 50
     });
     var water = createRegion({
         granularity: params.granularity,
@@ -38,7 +38,7 @@ var environment = function(params) {
             green: 0,
             blue: 200
         },
-        max: 100
+        max: 500
     });
     var bact_index = createRegion({
         granularity: params.granularity,
@@ -47,7 +47,7 @@ var environment = function(params) {
             green: 0,
             blue: 0
         },
-        max: 50
+        max: 250
     });
 
     function presetRegion(region, min, max, ratioFunc){
