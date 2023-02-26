@@ -62,7 +62,7 @@ window.addEventListener("load", function (event){
 */
         stats.innerHTML = "";
         if(play_chkb.checked){
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width*2, canvas.height*2);
             environment.mainLoop(ctx);
         }
 
