@@ -62,10 +62,10 @@ var environment = function(params) {
         }
     }
 
-    resources.set(params.center.x,params.center.y,100);
-    presetRegion(resources, 1, 4, function(r){return params.granularity * 100/r});
-    presetRegion(water, 5, 8, function(r){return 20});
-    presetRegion(fire, 9, 9, function(r){return 5});
+    resources.set(params.center.x,params.center.y,100*2);
+    presetRegion(resources, 2, 8, function(r){return params.granularity * 200/r});
+    presetRegion(water, 10, 16, function(r){return 40});
+    presetRegion(fire, 18, 18, function(r){return 10});
 
     resources.onhover(function(b){
         if(Math.random()<params.proba.eat){
