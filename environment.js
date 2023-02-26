@@ -12,6 +12,7 @@ var environment = function(params) {
     }
 
     var bacteria_list = [];
+    var specCount = [0,0,0];
     var resources = createRegion({
         granularity: params.granularity,
         color: {
@@ -192,7 +193,8 @@ var environment = function(params) {
         addBacteria: addBacteria,
         getLength: function (){return bacteria_list.length;},
         mainLoop: mainLoop,
-        _index: bact_index
+        _index: bact_index,
+        specCount: function (){return {red:specCount[0],green:specCount[1],blue:specCount[2];};},
     };
 }({
     center: {
