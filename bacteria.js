@@ -165,6 +165,21 @@ function generateBacteria(init_vars)
         isDead: function(){return !living;},
         getCoords: function() {return {x:x,y:y};},
         getColor: function() {return {red:init_vars.color.red,green:init_vars.color.green,blue:init_vars.color.blue};},
+        getSpec: function() {return Math.floor((Math.hypot(getColor.red,getColor.green,getColor.blue)/100));},
+        setSpec: function() {
+            if (living == true ){
+                if (getSpec == 0) {specCount[0] += 1;};
+                if (getSpec == 1) {specCount[1] += 1;};
+                if (getSpec == 2) {specCount[2] += 1;);
+                else specCount += 1;
+             }
+             else {
+                 if (getSpec == 0) {specCount[0] -= 1;};
+                 if (getSpec == 1) {specCount[1] -= 1;};
+                 if (getSpec == 2) {specCount[2] -= 1;);
+                 else specCount -= 1;
+             }
+        }
         eat: function(r) {health += r;},
         setUnderwater: function(isWater) {underwater = isWater;},
         _hash: Math.floor(Math.random()*1e5),
