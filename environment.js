@@ -63,9 +63,9 @@ var environment = function(params) {
     }
 
     resources.set(params.center.x,params.center.y,100*2);
-    presetRegion(resources, 2, 8, function(r){return params.granularity * 200/r});
-    presetRegion(water, 10, 16, function(r){return 40});
-    presetRegion(fire, 18, 18, function(r){return 10});
+    presetRegion(resources, 1, 1, function(r){return params.granularity * 400/r});
+    presetRegion(water, 20, 26, function(r){return 80});
+    presetRegion(fire, 27, 27, function(r){return 20});
 
     resources.onhover(function(b){
         if(Math.random()<params.proba.eat){
